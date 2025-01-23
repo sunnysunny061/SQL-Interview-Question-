@@ -1,0 +1,37 @@
+-- Create the sales table
+CREATE TABLE sales (
+    month VARCHAR(10),
+    ytd_sales INT
+);
+
+-- Insert sample data into the sales table
+INSERT INTO sales (month, ytd_sales) VALUES
+('Jan', 1000),
+('Feb', 1800),
+('Mar', 2500),
+('Apr', 3200);
+
+-- Query to calculate periodic sales
+
+
+WITH temp_table AS (
+    SELECT *, 
+           LAG(ytd_sales) OVER (ORDER BY month) AS order_sales 
+    FROM sales
+)
+SELECT 
+    month, 
+    ytd_sales, 
+    (CASE 
+        WHEN order_sales IS NULL THEN ytd_sales 
+        ELSE (ytd_sales - order_sales) 
+     END) AS periodic_sales
+FROM temp_table;
+
+-- Expected output
+-- | Month | YTD_Sales | Periodic_Sales |
+-- |-------|-----------|----------------|
+-- | Jan   | 1000      | 1000           |
+-- | Feb   | 1800      | 800            |
+-- | Mar   | 2500      | 700            |
+-- | Apr   | 3200      | 700            |
