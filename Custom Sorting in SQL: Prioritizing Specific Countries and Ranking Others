@@ -1,0 +1,41 @@
+-- Create the happiness_tbl table
+CREATE TABLE happiness_tbl (
+    country VARCHAR(50),
+    ranking INT
+);
+
+-- Insert sample data into happiness_tbl
+INSERT INTO happiness_tbl (country, ranking) VALUES
+('Finland', 1),
+('Denmark', 2),
+('Norway', 3),
+('Switzerland', 4),
+('Sweden', 5),
+('India', 126),
+('Sri Lanka', 128),
+('Bhutan', 129),
+('Nepal', 130);
+
+-- Query to order countries with India first, Sri Lanka second, and others by ranking
+SELECT country, ranking 
+FROM happiness_tbl
+ORDER BY 
+    CASE 
+        WHEN country = 'India' THEN 1
+        WHEN country = 'Sri Lanka' THEN 2
+        ELSE 3
+    END,
+    ranking ASC;
+
+-- Expected Output:
+-- | Country      | Ranking |
+-- |--------------|---------|
+-- | India        | 126     |
+-- | Sri Lanka    | 128     |
+-- | Finland      | 1       |
+-- | Denmark      | 2       |
+-- | Norway       | 3       |
+-- | Switzerland  | 4       |
+-- | Sweden       | 5       |
+-- | Bhutan       | 129     |
+-- | Nepal        | 130     |
