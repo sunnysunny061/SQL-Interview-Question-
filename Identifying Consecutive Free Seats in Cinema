@@ -1,0 +1,10 @@
+WITH temp_table AS (
+    SELECT seat_id, 
+           free, 
+           LAG(free) OVER (ORDER BY seat_id) AS prev_status,
+           LEAD(free) OVER (ORDER BY seat_id) AS next_status
+    FROM cinema_tbl
+)
+SELECT seat_id 
+FROM temp_table 
+WHERE free = 1 AND (prev_status = 1 OR next_status = 1);
