@@ -1,0 +1,26 @@
+-- Create the student_tbl table
+CREATE TABLE student_tbl (
+    sname VARCHAR(50),
+    marks INT
+);
+
+-- Insert sample data into student_tbl
+INSERT INTO student_tbl (sname, marks) VALUES
+('John', 25),
+('Sarah', 55),
+('Alex', 75),
+('Emma', 85);
+
+-- Add a computed column 'grade' to classify students based on marks
+ALTER TABLE student_tbl 
+ADD grade VARCHAR(20) AS (
+    CASE 
+        WHEN marks < 31 THEN "poor" 
+        WHEN marks > 30 AND marks < 60 THEN "good"
+        WHEN marks > 59 AND marks < 80 THEN "Vgood"
+        ELSE "Excellent" 
+    END
+);
+
+-- Query to view the final result
+SELECT * FROM student_tbl;
