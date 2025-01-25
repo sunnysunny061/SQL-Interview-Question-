@@ -1,0 +1,15 @@
+Assigning Missing Categories Using Previous Row Data
+
+WITH temp_table AS (
+    SELECT category, 
+           brand_name, 
+           LAG(category) OVER (ORDER BY category, brand_name) AS prev_category
+    FROM snacks
+)
+SELECT 
+    (CASE 
+        WHEN category IS NULL THEN prev_category
+        ELSE category 
+     END) AS category, 
+    brand_name 
+FROM temp_table;
