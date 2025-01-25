@@ -1,0 +1,10 @@
+WITH temp_table AS (
+    SELECT id, empid 
+    FROM input 
+    WHERE DATEPART(dw, id) IN (1, 7) -- Filters for Saturday (7) and Sunday (1)
+)
+SELECT 
+    empid, 
+    SUM(DATEDIFF(minute, MIN(id), MAX(id)) / 60.0) AS total_weekend_working_hrs 
+FROM temp_table
+GROUP BY empid;
