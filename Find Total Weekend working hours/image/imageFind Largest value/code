@@ -1,0 +1,5 @@
+
+Find Largest value
+
+
+select col1, greatest(col2, col2) as max_values from input_table
