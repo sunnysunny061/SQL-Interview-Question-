@@ -1,0 +1,22 @@
+Find the Currency Exchange rate at beginning and ending of month
+
+
+ITH mycte AS (
+    SELECT 
+        currency_code, 
+        date, 
+        currency_exchange_rate, 
+        MONTH(date) AS month
+    FROM input
+),
+mycte2 AS (
+    SELECT  
+        *, 
+        ROW_NUMBER() OVER (PARTITION BY month, currency_code ORDER BY currency_exchange_rate) AS row_number 
+    FROM mycte
+)
+SELECT 
+    CONCAT(currency_code, SUBSTRING(date, 1, 6)) AS currency_code_year_month, 
+    currency_exchange_rate AS currency_exchange_beginning
+FROM mycte2
+WHERE row_number = 1;
