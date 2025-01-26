@@ -1,0 +1,4 @@
+SELECT 
+    col1, 
+    LENGTH(REPLACE(col2, ',', '')) AS length_without_commas 
+FROM input;
