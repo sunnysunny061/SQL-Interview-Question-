@@ -1,0 +1,6 @@
+with temp_table as
+(
+select eid, dept, scores, max(scores) over (partition by dept) as maxi from input
+)
+
+select eid, dept, maxi from temp_table
