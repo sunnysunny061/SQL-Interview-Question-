@@ -1,0 +1,6 @@
+Find Largest value
+
+SELECT 
+    col1, 
+    GREATEST(col2, col3) AS maxval 
+FROM input;
