@@ -1,0 +1,5 @@
+select id, email, 
+(case when (length(email)-length(replace(email, '@', '')))=1 
+			then substring_index(email, '@', -1)
+      else 'invalid' end) as domain 
+from input
