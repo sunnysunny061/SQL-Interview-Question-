@@ -1,0 +1,17 @@
+WITH mycte AS (
+    SELECT 
+        d.deptname AS dept_name,  
+        e.empname AS emp_name,
+        e.salary AS salary
+    FROM Emp AS e 
+    JOIN Dept AS d 
+    ON d.deptid = e.depid  
+    WHERE (e.depid, e.salary) IN (
+        SELECT depid, MAX(salary) 
+        FROM Emp 
+        GROUP BY depid
+    )
+)
+SELECT dept_name, GROUP_CONCAT(emp_name ORDER BY emp_name) AS emp_name
+FROM mycte
+GROUP BY dept_name;
