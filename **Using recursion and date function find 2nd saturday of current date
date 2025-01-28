@@ -1,0 +1,26 @@
+WITH mycte AS (
+    -- Generate all dates in the current month
+    SELECT DATEFROMPARTS(YEAR(GETDATE()), MONTH(GETDATE()), 1) AS date
+    UNION ALL
+    SELECT DATEADD(DAY, 1, date)
+    FROM mycte
+    WHERE MONTH(DATEADD(DAY, 1, date)) = MONTH(GETDATE())
+),
+temp_table AS (
+    -- Add the day name to each date
+    SELECT 
+        date, 
+        DATENAME(WEEKDAY, date) AS day_name      (also we can use --> datapart(dw, date))
+    FROM mycte
+),
+my_final_cte AS (
+    -- Assign a row number for each occurrence of the day name
+    SELECT 
+        *, 
+        ROW_NUMBER() OVER (PARTITION BY day_name ORDER BY date) AS sat_row
+    FROM temp_table
+)
+-- Filter for the second Saturday
+SELECT *
+FROM my_final_cte
+WHERE day_name = 'Saturday' AND sat_row = 2;
