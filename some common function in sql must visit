@@ -1,0 +1,7 @@
+select concat(replicate('*', 12), right(cards_number, 4)) from cards
+
+SELECT e.ename 
+FROM employees e 
+JOIN employees e1 
+ON e.salary = e1.salary 
+AND e.ename != e1.ename;
