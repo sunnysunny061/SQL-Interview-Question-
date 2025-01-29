@@ -1,0 +1,12 @@
+WITH mycte AS (
+    SELECT emp_name, dept_id, salary,
+           ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary ASC) AS min_to_max_row_number,
+           ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS max_to_min_row_number
+    FROM input
+)
+
+SELECT dept_id, 
+       MAX(CASE WHEN min_to_max_row_number = 1 THEN emp_name END) AS min_Sal_empname,
+       MAX(CASE WHEN max_to_min_row_number = 1 THEN emp_name END) AS max_Sal_empname
+FROM mycte
+GROUP BY dept_id;
