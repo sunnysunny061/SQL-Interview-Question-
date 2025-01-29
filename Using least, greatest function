@@ -1,0 +1,14 @@
+WITH mycte AS (
+    SELECT origin, destination, 
+           LEAST(origin, destination) AS least_value, 
+           GREATEST(origin, destination) AS greatest_value 
+    FROM input
+),
+mycte_2 AS (
+    SELECT *, 
+           ROW_NUMBER() OVER (PARTITION BY least_value, greatest_value ORDER BY origin) AS row_number 
+    FROM mycte
+)
+SELECT origin, destination 
+FROM mycte_2
+WHERE row_number = 1;
