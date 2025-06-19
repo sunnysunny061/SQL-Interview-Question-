@@ -1,0 +1,18 @@
+WITH mytmp AS (
+    SELECT 
+        ProductID, 
+        Product, 
+        Category,
+        ROW_NUMBER() OVER (PARTITION BY Category ORDER BY ProductID) AS new_order_asc,
+        ROW_NUMBER() OVER (PARTITION BY Category ORDER BY ProductID DESC) AS new_order_desc
+    FROM main_table
+)
+
+SELECT 
+    t2.ProductID AS ProductID,   -- swapped ProductID
+    t1.Product AS Product, 
+    t1.Category AS Category
+FROM mytmp AS t1
+JOIN mytmp AS t2 
+  ON t1.Category = t2.Category 
+ AND t1.new_order_asc = t2.new_order_desc;
